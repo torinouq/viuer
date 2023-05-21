@@ -1,0 +1,29 @@
+version: '3'
+services:
+  electron:
+    build: 
+      context: ./src
+    volumes:
+      - ./src:/app
+    depends_on:
+      - mysql
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=myapp
+    ports:
+      - 3000:3000
+    command: npm start
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=myapp
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
